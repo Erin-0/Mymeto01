@@ -370,7 +370,7 @@
 
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
-        window.location.href = 'wow.html'; // توجيه المستخدم بعد تسجيل الدخول بنجاح
+        window.location.href = 'index.html'; // توجيه المستخدم بعد تسجيل الدخول بنجاح
       })
       .catch((error) => {
         const errorCode = error.code;
