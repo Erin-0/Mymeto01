@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyMeto Weather</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --text-color: #2c3e50;
+            --error-color: #e74c3c;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: var(--text-color);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 2rem;
+            background: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo i {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .menu-btn:hover {
+            color: var(--primary-color);
+        }
+
+        #welcome-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 70px);
+            padding: 2rem;
+        }
+
+        .search-container {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 450px;
+            transform: translateY(-2rem);
+        }
+
+        .welcome-text {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-text h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-text p {
+            color: #666;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        #cityInput {
+            width: 100%;
+            padding: 1rem 1rem 1rem 2.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        #cityInput:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        #start {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        #start:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        #error {
+            color: var(--error-color);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        #home {
+            display: none;
+            padding: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .weather-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            width: 100%;
+            box-shadow: var(--shadow);
+        }
+
+        .weather-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .city-info h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .country-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+        }
+
+        .temperature-display {
+            text-align: center;
+        }
+
+        .temp-value {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .weather-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #eee;
+        }
+
+        .weather-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .weather-item i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 300px;
+            height: 100%;
+            background-color: white;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            z-index: 1000;
+            padding: 2rem;
+        }
+
+        .menu.active {
+            right: 0;
+        }
+
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .menu ul {
+            list-style: none;
+        }
+
+        .menu li {
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .menu li:hover {
+            background-color: #f5f7fa;
+            color: var(--primary-color);
+        }
+
+        .menu li i {
+            margin-right: 1rem;
+            width: 20px;
+        }
+
+        .backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .row {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            width: calc(50% - 10px);
+            max-width: 350px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            background: #1e90ff;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-text {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .weather-icon {
+            font-size: 24px;
+        }
+
+        .card-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .content-text {
+            margin: 0;
+            font-size: 16px;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .search-container {
+                width: 90%;
+                padding: 1.5rem;
+            }
+
+            .weather-details {
+                grid-template-columns: 1fr;
+            }
+
+            .temp-value {
+                font-size: 2.5rem;
+            }
+
+            .row {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .card {
+                width: 100%;
+                
+            }
+        }
+    .cird {
+      display: flex;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .card-image {
+      width: 50%;
+      height: 200px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .card-con {
+      width: 50%;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .cartit {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .card-ses {
+      font-size: 14px;
+      color: #666;
+    }
+    
+  .save-btn {
+    background-color: #f0f0f0;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* الزر عند الحفظ */
+  .save-btn.saved {
+    background-color: #3498db; /* اللون الأزرق الفاتح */
+    color: white;
+  }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <i class="fas fa-cloud-sun"></i>
+            <h1>MyMeto</h1>
+        </div>
+        <button class="menu-btn" aria-label="Menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <div class="backdrop"></div>
+
+    <div class="menu">
+        <div class="menu-header">
+            <h2>Menu</h2>
+            <button class="menu-btn" aria-label="Close menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul>
+            <ul>
+    <li id="set"><i class="fas fa-cog"></i>Settings</li>
+    <li id="ab-us"><i class="fas fa-info-circle"></i>About Us</li>
+    <li id="su"><i class="fas fa-question-circle"></i>Support</li>
+    <li id="sav"><i class="fas fa-city"></i>Saved Cities</li>
+    <li id="login-account">
+        <i class="fas fa-sign-in-alt"></i>Login
+    </li>
+</ul>
+        </ul>
+    </div>
+
+    <div id="welcome-page">
+        <div class="search-container">
+            <div class="welcome-text">
+                <h2>Weather Forecast</h2>
+                <p>Enter a city name to get the current weather</p>
+            </div>
+            <div class="input-group">
+                <i class="fas fa-search"></i>
+                <input type="text" id="cityInput" placeholder="Search for a city...">
+            </div>
+            <button id="start">Get Weather</button>
+            <p id="error"></p>
+        </div>
+    </div>
+
+    <div id="home">
+        <div class="weather-card">
+            <div class="weather-header">
+                <div class="city-info">
+                    <h2 id="cityName"></h2>
+                    <div class="country-info">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span id="countryName"></span>
+                    </div>
+                </div>
+                <div class="temperature-display">
+                    <div class="temp-value" id="temperatureValue"></div>
+                    <div id="weatherDescription"></div>
+                </div>
+            </div>
+            <div class="weather-details">
+                <div class="weather-item">
+                    <i class="fas fa-tint"></i>
+                    <div>
+                        <p>Humidity</p>
+                        <strong id="humidity"></strong>
+                    </div>
+                </div>
+                <div class="weather-item">
+                    <i class="fas fa-wind"></i>
+                    <div>
+                        <p>Wind Speed</p>
+                        <strong id="windSpeed"></strong>
+                    </div>
+                </div>
+                <div class="weather-item">
+                    <i class="fas fa-compress-arrows-alt"></i>
+                    <div>
+                        <p>Pressure</p>
+                        <strong id="pressure"></strong>
+                    </div>
+                </div>
+                <button id="saveCityButton" class="save-btn">Save City</button> <!-- زر الحفظ -->
+     
+
+
+
+            </div>
+        </div>
+      
+        <div class="container">
+            <div class="row">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="header-text">Pressure</span>
+                        <span class="weather-icon">📊</span>
+                    </div>
+                    <div class="card-content">
+                        <p class="content-text" id="pressure-text">Loading...</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <span class="header-text">Cloudiness</span>
+                        <span class="weather-icon">☁️</span>
+                    </div>
+                    <div class="card-content">
+                        <p class="content-text" id="clouds-text">Loading...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="header-text">Visibility</span>
+                        <span class="weather-icon">👁️</span>
+                    </div>
+                    <div class="card-content">
+                        <p class="content-text" id="visibility-text">Loading...</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <span class="header-text">Wind Speed</span>
+                        <span class="weather-icon">💨</span>
+                    </div>
+                    <div class="card-content">
+                        <p class="content-text" id="wind-text">Loading...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="header-text">Temperature</span>
+                        <span class="weather-icon">🌡️</span>
+                    </div>
+                    <div class="card-content">
+                        <p class="content-text" id="temperature-text">Loading...</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <span class="header-text">Humidity</span>
+                        <span class="weather-icon">💧</span>
+                    </div>
+                    <div class="card-content">
+                        <p class="content-text" id="humidity-text">Loading...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="cird">
+    <div class="card-image" style="background-image: url('/api/placeholder/300/200');"></div>
+    <div class="card-con">
+      <div class="cartit">Temperature</div>
+      <div class="card-ses">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget risus porta, eleifend odio vel, cursus dolor.</div>
+    </div>
+  </div>
+
+        <div class="cird">
+    <div class="card-image" style="background-image: url('/api/placeholder/300/200');"></div>
+    <div class="card-con">
+      <div class="cartit">Humidity</div>
+      <div class="card-ses">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget risus porta, eleifend odio vel, cursus dolor.</div>
+    </div>
+    </div>
+        <div class="cird">
+    <div class="card-image" style="background-image: url('/api/placeholder/300/200');"></div>
+    <div class="card-con">
+      <div class="cartit">Wind Speed</div>
+      <div class="card-ses">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget risus porta, eleifend odio vel, cursus dolor.</div>
+    </div>
+    </div>
+        <div class="cird">
+    <div class="card-image" style="background-image: url('/api/placeholder/300/200');"></div>
+    <div class="card-con">
+      <div class="cartit">Visibility</div>
+      <div class="card-ses">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget risus porta, eleifend odio vel, cursus dolor.</div>
+    </div>
+    </div>
+        <div class="cird">
+    <div class="card-image" style="background-image: url('/api/placeholder/300/200');"></div>
+    <div class="card-con">
+      <div class="cartit">Cloudiness</div>
+      <div class="card-ses">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget risus porta, eleifend odio vel, cursus dolor.</div>
+    </div>
+    </div>
+
+    
+            
+            
+            
+
+    
+        
+    <!-- Previous HTML structure remains the same -->
+
+
+        <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+
+        <script>
+        // تأكد من استيراد Firebase في مشروعك
+// إذا كنت تستخدم Firebase CDN:
+
+// إعدادات Firebase
+
+// إعدادات Firebase
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+// تهيئة Firebase
+const app = firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+// التعامل مع زر تسجيل الدخول أو الحساب
+document.addEventListener('DOMContentLoaded', () => {
+  const loginAccountItem = document.getElementById('login-account');
+
+  // مراقبة حالة المستخدم
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      // إذا كان المستخدم مسجلاً دخول
+      loginAccountItem.innerHTML = '<i class="fas fa-user-circle"></i>My Account';
+      loginAccountItem.onclick = () => {
+        window.location.href = 'account.html'; // رابط صفحة الحساب
+      };
+    } else {
+      // إذا لم يكن هناك مستخدم مسجل دخول
+      loginAccountItem.innerHTML = '<i class="fas fa-sign-in-alt"></i>Login';
+      loginAccountItem.onclick = () => {
+        window.location.href = 'logins.html'; // رابط صفحة تسجيل الدخول
+      };
+    }
+  });
+});
+
+        
+        const saveButton = document.getElementById("saveCityButton");
+  const cityInput = document.getElementById("cityInput");
+
+  // تحديث حالة الزر بناءً على حالة الحفظ
+  function updateSaveButton(saved) {
+    if (saved) {
+      saveButton.textContent = "Saved ";
+      saveButton.style.backgroundColor = "#2ecc71"; // لون أخضر
+    } else {
+      saveButton.textContent = "Save City";
+      saveButton.style.backgroundColor = ""; // لون افتراضي
+    }
+  }
+
+  // عند الضغط على زر الحفظ
+  saveButton.addEventListener("click", function () {
+    const cityName = cityInput.value.trim();
+    if (!cityName) {
+      alert("Please enter city name !");
+      return;
+    }
+
+    let savedCities = JSON.parse(localStorage.getItem("cities")) || [];
+    if (savedCities.includes(cityName)) {
+      // إذا كانت المدينة محفوظة، احذفها
+      savedCities = savedCities.filter((city) => city !== cityName);
+      updateSaveButton(false);
+    } else {
+      // إذا لم تكن محفوظة، أضفها
+      savedCities.push(cityName);
+      updateSaveButton(true);
+    }
+    localStorage.setItem("cities", JSON.stringify(savedCities));
+  });
+
+  // تحديث حالة الزر عند تغيير المدينة
+  cityInput.addEventListener("input", function () {
+    const cityName = cityInput.value.trim();
+    const savedCities = JSON.parse(localStorage.getItem("cities")) || [];
+    updateSaveButton(savedCities.includes(cityName));
+  });
+        
+        
+        
+        
+  // المرجع إلى زر الحفظ
+  const saveCityBtn = document.getElementById('saveCityBtn');
+
+  // الحصول على معرف المستخدم الحالي
+  
+
+  // اسم المدينة الحالي (يجب تغييره ديناميكيًا بناءً على المدينة التي يختارها المستخدم)
+  let currentCity = "London";
+
+  // التحقق من حالة المدينة عند تحميل الصفحة
+  
+
+  // التعامل مع الضغط على زر الحفظ
+  
+document.getElementById("ab-us").addEventListener("click", function () {
+    window.location.href = "aboutus.html"; // تحويل المستخدم إلى aboutus.html
+});
+
+document.getElementById("set").addEventListener("click", function () {
+    window.location.href = "Settings%20.html"; // تحويل المستخدم إلى Settings.html
+});
+
+document.getElementById("sav").addEventListener("click", function () {
+    window.location.href = "Saved%20cities%20.html"; // تحويل المستخدم إلى Saved cities.html
+});
+
+document.getElementById("su").addEventListener("click", function () {
+    window.location.href = "%20Support.html"; // تحويل المستخدم إلى support.html
+});
+
+        const API_KEY = "579a8e74d73a35c76ebe00d0ef5198dc";
+
+        // Utility Functions for Weather Descriptions
+        const weatherDescriptions = {
+            getHumidityDescription: (humidity) => {
+                if (humidity < 30) return "Dry Atmosphere";
+                if (humidity <= 60) return "Comfortable Humidity";
+                return "High Humidity";
+            },
+            getTemperatureDescription: (temp) => {
+                if (temp < 10) return "Freezing Cold";
+                if (temp < 20) return "Cool Temperature";
+                if (temp < 30) return "Warm Weather";
+                return "Hot and Sunny";
+            },
+            getWindDescription: (speed) => {
+                if (speed < 5) return "Calm Winds";
+                if (speed < 15) return "Gentle Breeze";
+                if (speed < 30) return "Moderate Winds";
+                return "Strong Gusty Winds";
+            },
+            getVisibilityDescription: (visibility) => {
+                if (visibility > 10) return "Crystal Clear";
+                if (visibility >= 5) return "Moderate Visibility";
+                return "Low Visibility";
+            },
+            getCloudDescription: (coverage) => {
+                if (coverage <= 20) return "Clear Skies";
+                if (coverage <= 50) return "Partly Cloudy";
+                if (coverage <= 80) return "Mostly Overcast";
+                return "Dense Cloud Cover";
+            },
+            getPressureDescription: (pressure) => {
+                if (pressure < 1000) return "Low Atmospheric Pressure";
+                if (pressure <= 1020) return "Stable Pressure";
+                return "High Atmospheric Pressure";
+            }
+        };
+
+        // Menu Functionality
+        const menuToggle = () => {
+            const menu = document.querySelector('.menu');
+            const backdrop = document.querySelector('.backdrop');
+            menu.classList.toggle('active');
+            backdrop.style.display = menu.classList.contains('active') ? 'block' : 'none';
+        };
+
+        // Error Handling
+        const displayError = (message) => {
+            const errorElement = document.getElementById("error");
+            errorElement.textContent = message;
+            errorElement.style.opacity = 1;
+            setTimeout(() => {
+                errorElement.style.opacity = 0;
+            }, 3000);
+        };
+
+        // Weather Data Fetching and UI Update
+        async function fetchWeatherData(city) {
+            try {
+                const response = await fetch(
+                    `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`
+                );
+
+                if (!response.ok) {
+                    throw new Error("City not found. Please check the spelling and try again.");
+                }
+
+                const data = await response.json();
+                updateMainWeatherCard(data);
+                updateAdditionalWeatherCards(data);
+            } catch (error) {
+                displayError(error.message);
+            }
+        }
+
+        // Update Main Weather Card
+        function updateMainWeatherCard(data) {
+            document.getElementById("cityName").textContent = data.name;
+            document.getElementById("countryName").textContent = data.sys.country;
+            document.getElementById("temperatureValue").textContent = `${Math.round(data.main.temp)}°C`;
+            document.getElementById("weatherDescription").textContent = data.weather[0].description
+                .split(' ')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+            document.getElementById("humidity").textContent = `${data.main.humidity}%`;
+            document.getElementById("windSpeed").textContent = `${Math.round(data.wind.speed * 3.6)} km/h`;
+            document.getElementById("pressure").textContent = `${data.main.pressure} hPa`;
+
+            // Switch views
+            document.getElementById("welcome-page").style.display = "none";
+            document.getElementById("home").style.display = "block";
+        }
+
+        // Update Additional Weather Cards in Reverse Order
+        function updateAdditionalWeatherCards(data) {
+            const cardData = [
+                { id: 'pressure-text', value: data.main.pressure, description: weatherDescriptions.getPressureDescription(data.main.pressure), icon: '📊' },
+                { id: 'clouds-text', value: data.clouds.all, description: weatherDescriptions.getCloudDescription(data.clouds.all), icon: '☁️' },
+                { id: 'visibility-text', value: data.visibility / 1000, description: weatherDescriptions.getVisibilityDescription(data.visibility / 1000), icon: '👁️' },
+                { id: 'wind-text', value: Math.round(data.wind.speed * 3.6), description: weatherDescriptions.getWindDescription(Math.round(data.wind.speed * 3.6)), icon: '💨' },
+                { id: 'temperature-text', value: Math.round(data.main.temp), description: weatherDescriptions.getTemperatureDescription(Math.round(data.main.temp)), icon: '🌡️' },
+                { id: 'humidity-text', value: data.main.humidity, description: weatherDescriptions.getHumidityDescription(data.main.humidity), icon: '💧' }
+            ];
+
+            cardData.reverse().forEach((item, index) => {
+                const element = document.getElementById(item.id);
+                if (element) {
+                    element.textContent = `${item.description}`;
+                    // You could also update the icon dynamically if needed
+                }
+            });
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuBtns = document.querySelectorAll('.menu-btn');
+            const backdrop = document.querySelector('.backdrop');
+            
+            menuBtns.forEach(btn => btn.addEventListener('click', menuToggle));
+            backdrop.addEventListener('click', menuToggle);
+
+            document.getElementById("start").addEventListener("click", () => {
+                const city = document.getElementById("cityInput").value.trim();
+                city ? fetchWeatherData(city) : displayError("Please enter a city name");
+            });
+
+            document.getElementById("cityInput").addEventListener("keypress", (event) => {
+                if (event.key === "Enter") {
+                    const city = event.target.value.trim();
+                    city ? fetchWeatherData(city) : displayError("Please enter a city name");
+                }
+            });
+        });
+            //--------------
+            function getRecommendations(weatherData) {
+    const recommendations = {
+        temperature: {
+            cold: "It's very cold. Wear warm layers, use thermal clothing, and limit outdoor exposure.",
+            cool: "Cool weather. Dress in light jackets, perfect for brisk walks or light outdoor activities.",
+            warm: "Warm and pleasant. Great for outdoor sports, picnics, and outdoor recreation.",
+            hot: "Hot weather. Stay hydrated, use sunscreen, wear light clothing, and avoid midday sun."
+        },
+        humidity: {
+            dry: "The air is very dry. Keep yourself hydrated, use moisturizer, and consider a humidifier.",
+            comfortable: "Humidity levels are comfortable. Enjoy outdoor activities without discomfort.",
+            humid: "High humidity. Stay in well-ventilated areas, wear breathable clothing, and stay hydrated."
+        },
+        windSpeed: {
+            calm: "Calm winds. Perfect for outdoor yoga, photography, or leisurely walks.",
+            light: "Light breeze. Good for cycling, kite flying, and outdoor sports.",
+            moderate: "Moderate winds. Be cautious during outdoor activities. Secure loose items.",
+            strong: "Strong winds. Recommended to stay indoors. Avoid outdoor activities and driving."
+        },
+        visibility: {
+            excellent: "Crystal clear visibility. Ideal for road trips, sightseeing, and outdoor photography.",
+            good: "Good visibility. Safe for driving and outdoor activities.",
+            poor: "Low visibility. Exercise caution while driving. Consider postponing travel."
+        },
+        cloudiness: {
+            clear: "Clear skies. Perfect for outdoor events, stargazing, and solar activities.",
+            partlyCloudy: "Partly cloudy. Great for picnics and outdoor leisure.",
+            mostlyCloudy: "Mostly cloudy. Good for mild outdoor walks or indoor activities.",
+            overcast: "Overcast skies. Prepare for potential rain. Keep an umbrella handy."
+        }
+    };
+
+    // Temperature-based recommendation
+    let tempRec = recommendations.temperature.warm;
+    if (weatherData.temperature < 10) tempRec = recommendations.temperature.cold;
+    else if (weatherData.temperature < 20) tempRec = recommendations.temperature.cool;
+    else if (weatherData.temperature > 30) tempRec = recommendations.temperature.hot;
+
+    // Humidity-based recommendation
+    let humidityRec = recommendations.humidity.comfortable;
+    if (weatherData.humidity < 30) humidityRec = recommendations.humidity.dry;
+    else if (weatherData.humidity > 60) humidityRec = recommendations.humidity.humid;
+
+    // Wind speed recommendation
+    let windRec = recommendations.windSpeed.light;
+    if (weatherData.windSpeed < 5) windRec = recommendations.windSpeed.calm;
+    else if (weatherData.windSpeed > 30) windRec = recommendations.windSpeed.strong;
+    else if (weatherData.windSpeed > 15) windRec = recommendations.windSpeed.moderate;
+
+    // Visibility recommendation
+    let visibilityRec = recommendations.visibility.good;
+    if (weatherData.visibility > 10) visibilityRec = recommendations.visibility.excellent;
+    else if (weatherData.visibility < 5) visibilityRec = recommendations.visibility.poor;
+
+    // Cloudiness recommendation
+    let cloudinessRec = recommendations.cloudiness.partlyCloudy;
+    if (weatherData.cloudiness < 20) cloudinessRec = recommendations.cloudiness.clear;
+    else if (weatherData.cloudiness > 80) cloudinessRec = recommendations.cloudiness.overcast;
+
+    return {
+        temperature: tempRec,
+        humidity: humidityRec,
+        windSpeed: windRec,
+        visibility: visibilityRec,
+        cloudiness: cloudinessRec
+    };
+}
+
+function updateRecommendationCards(weatherData) {
+    const cards = document.querySelectorAll(".cird");
+    const recommendations = getRecommendations(weatherData);
+    const recommendationKeys = Object.keys(recommendations);
+
+    cards.forEach((card, index) => {
+        const description = card.querySelector(".card-ses");
+        if (description && recommendationKeys[index]) {
+            description.textContent = recommendations[recommendationKeys[index]];
+        }
+    });
+}
+
+// Modify fetchWeatherData to include recommendation update
+async function fetchWeatherData(city) {
+    try {
+        const response = await fetch(
+            `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`
+        );
+
+        if (!response.ok) {
+            throw new Error("City not found. Please check the spelling and try again.");
+        }
+
+        const data = await response.json();
+        const weatherDataForRecommendations = {
+            temperature: Math.round(data.main.temp),
+            humidity: data.main.humidity,
+            windSpeed: Math.round(data.wind.speed * 3.6),
+            visibility: data.visibility / 1000,
+            cloudiness: data.clouds.all
+        };
+
+        updateMainWeatherCard(data);
+        updateAdditionalWeatherCards(data);
+        updateRecommendationCards(weatherDataForRecommendations);
+    } catch (error) {
+        displayError(error.message);
+    }
+}
+        function getCityFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('city');
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const cityName = getCityFromURL();
+    if (cityName) {
+      document.getElementById("cityInput").value = cityName;
+      document.getElementById("start").click();
+    }
+  });
+        // تحميل المدن المحفوظة عند تحميل الصفحة
+function loadSavedCities() {
+  const savedCities = JSON.parse(localStorage.getItem("cities")) || [];
+  if (savedCities.includes(cityName)) {
+    saveButton.classList.add('saved'); // إذا كانت المدينة محفوظة، تغيير لون الزر إلى الأخضر
+    saveButton.disabled = true; // تعطيل الزر بعد الحفظ
+  }
+}
+
+// حفظ المدينة عند الضغط على زر الحفظ
+function saveCity() {
+  let savedCities = JSON.parse(localStorage.getItem("cities")) || [];
+  if (!savedCities.includes(cityName)) {
+    savedCities.push(cityName);
+    localStorage.setItem("cities", JSON.stringify(savedCities)); // حفظ المدن في LocalStorage
+    alert(`${cityName} .Saved successfully `);
+    saveButton.classList.add('saved'); // تغيير لون الزر إلى الأخضر بعد الحفظ
+    saveButton.disabled = true; // تعطيل الزر بعد الحفظ
+  } else {
+    alert(`${cityName} It has already been saved.`);
+  }
+}
+
+// تحميل الحالة للزر عند تحميل الصفحة
+loadSavedCities();
+        
+        
+  // يمكنك الآن تحميل بيانات إضافية من Firestore
+
+    </script>
+</body>
+</html>

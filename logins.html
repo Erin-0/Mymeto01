@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- (الكود السابق للرأس يبقى كما هو) -->
+    <style>
+          @media (max-width: 768px) {
+    form {
+        width: 90%;
+    }
+}
+  :root {
+            --primary-blue: #1E3A8A;
+            --light-blue: #3B82F6;
+            --background-color: #F3F4F6;
+            --error-red: #FF4136;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 450px;
+            min-height: 600px;
+            padding: 30px;
+            text-align: center;
+        }
+        h2 { color: var(--primary-blue); margin-bottom: 20px; }
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid var(--light-blue);
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        input:focus, select:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+        button {
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        button:hover { background-color: var(--light-blue); transform: scale(1.02); }
+        button:disabled { background-color: #9CA3AF; cursor: not-allowed; }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+        }
+        .checkbox-container input {
+            width: auto;
+            margin-right: 10px;
+        }
+        .signup-text {
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+        .error-message {
+            color: var(--error-red);
+            font-size: 0.8em;
+            text-align: left;
+            margin-top: -8px;
+            margin-bottom: 10px;
+        }
+        .google-error {
+            background-color: var(--error-red);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+        .google-button {
+            margin-top: 10px;
+            background-color: white;
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+        }
+        .google-button:hover { background-color: var(--background-color); }
+        #privacyModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        #privacyModal > div {
+            background: white;
+            border-radius: 10px;
+            max-width: 600px;
+            max-height: 70vh;
+            overflow-y: auto;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        #privacyModal h2 { margin-bottom: 15px; color: var(--primary-blue); }
+        #privacyModal p, #privacyModal ul { margin-bottom: 15px; text-align: left; }
+        #privacyModal ul { padding-left: 30px; }
+        #privacyModal button { margin-top: 15px; width: auto; padding: 10px 20px; }
+    
+        /* (الأنماط السابقة تبقى) */
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Section -->
+        <div id="loginContent">
+            <h2>Login</h2>
+            <p>Enter your credentials to access MYMETO</p>
+            <input type="email" id="emailInput" placeholder="Email Address" required>
+            <div id="emailError" class="error-message"></div>
+            <input type="password" id="passwordInput" placeholder="Password" required>
+            <div id="passwordError" class="error-message"></div>
+            <button onclick="emailSignIn()">Sign In</button>
+            <button onclick="signInWithGoogle()" class="google-button">Sign in with Google</button>
+            <div id="googleErrorMessage" class="google-error">Sorry, the process is not currently available.</div>
+            <p class="signup-text">Don't have an account? 
+                <span onclick="showSignupFlow()" style="color: var(--light-blue); text-decoration: underline; cursor: pointer;">
+                    Sign Up
+                </span>
+            </p>
+        </div>
+
+        <!-- Name Step -->
+        <div id="nameStep" class="hidden">
+            <h2>What's Your Name?</h2>
+            <input type="text" id="nameInput" placeholder="Full Name" required>
+            <div id="nameError" class="error-message"></div>
+            <button onclick="validateNameStep()">Next</button>
+        </div>
+
+        <!-- Age Step -->
+        <div id="ageStep" class="hidden">
+            <h2>How Old Are You?</h2>
+            <input type="number" id="ageInput" placeholder="Your Age" min="13" max="120" required>
+            <div id="ageError" class="error-message"></div>
+            <button onclick="validateAgeStep()">Next</button>
+        </div>
+
+        <!-- Country Step -->
+        <div id="countryStep" class="hidden">
+            <h2>Select Your Country</h2>
+            <select id="countryInput" required>
+                <option value="">Choose Country</option>
+                <option value="">Choose Country</option>
+                      <option value="SA">Saudi Arabia</option>
+                      <option value="AE">United Arab Emirates</option> 
+                      <option value="EG">Egypt</option> 
+                      <option value="US">United States</option> 
+                      <option value="GB">United Kingdom</option> 
+                      <option value="IN">India</option> 
+                      <option value="PK">Pakistan</option> 
+                      <option value="JO">Jordan</option> 
+                      <option value="LB">Lebanon</option> 
+                      <option value="IQ">Iraq</option> 
+                      <option value="SY">Syria</option> 
+                      <option value="QA">Qatar</option> 
+                      <option value="KW">Kuwait</option> 
+                      <option value="BH">Bahrain</option> 
+                      <option value="OM">Oman</option>
+                      <option value="Mo">Morocco</option>
+                      <option valeu="fr">France</option>
+            </select>
+            <div id="countryError" class="error-message"></div>
+            <button onclick="validateCountryStep()">Next</button>
+        </div>
+
+        <!-- Email Signup Step -->
+        <div id="emailSignupStep" class="hidden">
+            <h2>Create Your Account</h2>
+            <input type="email" id="newEmailInput" placeholder="Email Address" required>
+            <input type="password" id="newPasswordInput" placeholder="Password" required>
+            <input type="password" id="confirmPasswordInput" placeholder="Confirm Password" required>
+            
+            <div class="checkbox-container">
+                <input type="checkbox" id="privacyCheckbox">
+                <label>I agree to the 
+                    <span onclick="openPrivacyModal()" style="color: var(--light-blue); text-decoration: underline; cursor: pointer;">
+                        Privacy Policy
+                    </span>
+                </label>
+            </div>
+
+            <button onclick="createAccount()" id="createAccountBtn" disabled>Create Account</button>
+        </div>
+    </div>
+
+    <!-- Privacy Policy Modal (Same as previous code) -->
+    <div id="privacyModal">
+        <div>
+            
+    <h2>Privacy Policy for MYMETO</h2>
+    <p><strong>Effective Date:</strong> [Insert Date]</p>
+
+    <h3>Introduction</h3>
+    <p>Welcome to MYMETO! We value your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, and safeguard your information when you use our application and related services.</p>
+
+    <h3>1. Information We Collect</h3>
+    <ul>
+        <li><strong>Account Information:</strong> Your username, email address, password, and optional information such as your age and country.</li>
+        <li><strong>Preference Data:</strong> Your saved favorite cities for personalized weather updates.</li>
+        <li><strong>Weather Data:</strong> Weather information is retrieved via the OpenWeather API (Free Plan).</li>
+    </ul>
+
+    <h3>2. How We Use Your Information</h3>
+    <p>The information we collect is used for the following purposes:</p>
+    <ul>
+        <li>To create and manage your account, including login and saved preferences.</li>
+        <li>To provide you with weather updates and related features.</li>
+        <li>To save your progress and preferences, ensuring a better experience.</li>
+    </ul>
+    <p>We do not collect or store your precise location or other sensitive data.</p>
+
+    <h3>3. How We Store Your Information</h3>
+    <p>Your personal data (e.g., username, email, preferences) is securely stored on our servers. We take reasonable measures to protect your information from unauthorized access, disclosure, or misuse.</p>
+
+    <h3>4. Sharing of Information</h3>
+    <p>We do not sell, trade, or share your personal information with third parties, except:</p>
+    <ul>
+        <li><strong>Third-party APIs:</strong> We use OpenWeather API to provide weather updates. OpenWeather may collect or process weather-related data but does not receive your personal information.</li>
+    </ul>
+
+    <h3>5. Data Retention</h3>
+    <p>We retain your data for as long as your account is active. You can delete your account at any time, and your data will be permanently erased.</p>
+
+    <h3>6. Your Rights</h3>
+    <p>As a user of MYMETO, you have the following rights:</p>
+    <ul>
+        <li><strong>Access:</strong> You can request to see what information we have stored.</li>
+        <li><strong>Modification:</strong> You can update or correct your information.</li>
+        <li><strong>Deletion:</strong> You can request that your data be deleted.</li>
+    </ul>
+    <p>To exercise these rights, contact us at [Insert Email Address].</p>
+
+    <h3>7. Cookies and Tracking</h3>
+    <p>Currently, MYMETO does not use cookies or tracking tools to analyze user behavior.</p>
+
+    <h3>8. Changes to This Policy</h3>
+    <p>We may update this Privacy Policy from time to time. We encourage you to review it regularly to stay informed. Any significant changes will be communicated through the app or our GitHub page.</p>
+
+    <h3>9. Contact Us</h3>
+    <p>If you have any questions or concerns about this Privacy Policy, please contact us:</p>
+    <p>Email: [Insert Email Address]</p>
+    <p>GitHub: [Insert GitHub Link]</p>
+
+    <h3>10. Applicable Law</h3>
+    <p>This Privacy Policy is governed by the laws of Morocco.</p>
+
+    <p>By using MYMETO, you agree to the terms outlined in this Privacy Policy.</p>
+
+            <button onclick="closePrivacyPolicy()">Close</button>
+        </div>
+    </div>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+
+<script>
+  // تكوين Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyA6Slo6ADIW5lHYHSx-mdkRALfYawNMY5Y",
+    authDomain: "mymeto-e9fee.firebaseapp.com",
+    projectId: "mymeto-e9fee",
+    storageBucket: "mymeto-e9fee.firebasestorage.app",
+    messagingSenderId: "224872010579",
+    appId: "1:224872010579:web:bcebef217fd9bf0fd007a6",
+    measurementId: "G-HYP247FPHF"
+  };
+
+  // تهيئة Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  // التحقق من حالة تسجيل الدخول عند تحميل الصفحة
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      window.locationhref = 'wow.html'; // إذا كان المستخدم مسجلاً دخوله
+    }
+  });
+
+  // عرض تدفق التسجيل
+  function showSignupFlow() {
+    document.getElementById('loginContent').classList.add('hidden');
+    document.getElementById('nameStep').classList.remove('hidden');
+  }
+
+  // التحقق من اسم المستخدم
+  function validateNameStep() {
+    const name = document.getElementById('nameInput').value.trim();
+    if (name.length < 2) {
+      document.getElementById('nameError').textContent = 'Please enter a valid name. ';
+      return;
+    }
+    document.getElementById('nameStep').classList.add('hidden');
+    document.getElementById('ageStep').classList.remove('hidden');
+  }
+
+  // التحقق من العمر
+  function validateAgeStep() {
+    const age = document.getElementById('ageInput').value;
+    if (age < 11) {
+      document.getElementById('ageError').textContent = 'You must be at least 11 years old. ';
+      return;
+    }
+    document.getElementById('ageStep').classList.add('hidden');
+    document.getElementById('countryStep').classList.remove('hidden');
+  }
+
+  // التحقق من الدولة
+  function validateCountryStep() {
+    const country = document.getElementById('countryInput').value;
+    if (!country) {
+      document.getElementById('countryError').textContent = 'Please select your country';
+      return;
+    }
+    document.getElementById('countryStep').classList.add('hidden');
+    document.getElementById('emailSignupStep').classList.remove('hidden');
+  }
+
+  // فتح سياسة الخصوصية
+  function openPrivacyModal() {
+    document.getElementById('privacyModal').style.display = 'flex';
+  }
+
+  // إغلاق سياسة الخصوصية
+  function closePrivacyPolicy() {
+    document.getElementById('privacyModal').style.display = 'none';
+  }
+
+  // تفعيل زر الإنشاء عند الموافقة
+  document.getElementById('privacyCheckbox').addEventListener('change', function() {
+    const createBtn = document.getElementById('createAccountBtn');
+    createBtn.disabled = !this.checked;
+  });
+
+  // تسجيل الدخول بالبريد الإلكتروني وكلمة المرور
+  function emailSignIn() {
+    const email = document.getElementById('emailInput').value;
+    const password = document.getElementById('passwordInput').value;
+    const emailErrorDiv = document.getElementById('emailError');
+    const passwordErrorDiv = document.getElementById('passwordError');
+
+    // مسح رسائل الخطأ السابقة
+    emailErrorDiv.textContent = '';
+    passwordErrorDiv.textContent = '';
+
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        window.location.href = 'wow.html'; // توجيه المستخدم بعد تسجيل الدخول بنجاح
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+
+        if (errorCode === 'auth/user-not-found') {
+          emailErrorDiv.textContent = 'Email not found ';
+        } else if (errorCode === 'auth/wrong-password') {
+          passwordErrorDiv.textContent = 'Incorrect password ';
+        } else {
+          emailErrorDiv.textContent = 'Login error  : ' ;
+        }
+      });
+  }
+
+  // إنشاء حساب جديد
+  function createAccount() {
+    const name = document.getElementById('nameInput').value;
+    const age = document.getElementById('ageInput').value;
+    const country = document.getElementById('countryInput').value;
+    const email = document.getElementById('newEmailInput').value;
+    const password = document.getElementById('newPasswordInput').value;
+    const confirmPassword = document.getElementById('confirmPasswordInput').value;
+
+    if (password !== confirmPassword) {
+      alert('Password mismatch ');
+      return;
+    }
+
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+
+        return db.collection('users').doc(user.uid).set({
+          name: name,
+          age: age,
+          country: country,
+          email: email,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      })
+      .then(() => {
+        window.location.href = 'wow.html'; // توجيه المستخدم بعد إنشاء الحساب
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        alert('Error creating account  : ' + errorMessage);
+      });
+  }
+
+  // دعم تسجيل الدخول بجوجل (اختياري)
+  function signInWithGoogle() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithPopup(provider)
+      .then((result) => {
+        window.location.href = 'wow.html'; // توجيه المستخدم بعد تسجيل الدخول بنجاح
+      })
+      .catch((error) => {
+        document.getElementById('googleErrorMessage').style.display = 'block';
+        console.error('Login error :', error);
+      });
+  }
+    firebase.auth().signInWithEmailAndPassword(email, password)
+  .then((userCredential) => {
+    const user = userCredential.user;
+    // تخزين معرف المستخدم أو بيانات أخرى في LocalStorage
+    localStorage.setItem("userId", user.uid);
+    window.location.href = "wow.html"; // الانتقال إلى الصفحة الرئيسية
+  })
+  .catch((error) => {
+    console.error("Login error:", error.message);
+  });
+</script>    
+</body>
+</html>

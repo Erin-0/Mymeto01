@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support Page</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f8fc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 400px;
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #1e3a8a;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      border: 1px solid #d1d5db;
+      border-radius: 5px;
+      padding: 10px;
+      background-color: #ffffff;
+    }
+
+    .input-wrapper i {
+      margin-right: 10px;
+      color: #2563eb;
+    }
+
+    .input-field {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 14px;
+    }
+
+    textarea.input-field {
+      resize: none;
+      min-height: 100px;
+    }
+
+    .error {
+      color: #ef4444;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .button {
+      width: 100%;
+      background-color: #2563eb;
+      color: white;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: #1e40af;
+    }
+
+    .status {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .status.success {
+      color: #22c55e;
+    }
+
+    .status.error {
+      color: #ef4444;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Support</h2>
+    <form id="supportForm">
+      <!-- Name Input -->
+      <div class="input-group">
+        <div class="input-wrapper">
+          <i class="fas fa-user"></i>
+          <input 
+            type="text" 
+            id="name" 
+            placeholder="Your Name" 
+            class="input-field"
+          />
+        </div>
+        <p id="nameError" class="error"></p>
+      </div>
+
+      <!-- Email Input -->
+      <div class="input-group">
+        <div class="input-wrapper">
+          <i class="fas fa-envelope"></i>
+          <input 
+            type="email" 
+            id="email" 
+            placeholder="Your Email" 
+            class="input-field"
+          />
+        </div>
+        <p id="emailError" class="error"></p>
+      </div>
+
+      <!-- Message Input -->
+      <div class="input-group">
+  <div class="input-wrapper">
+    
+    <textarea 
+      id="message" 
+      placeholder="Your Message" 
+      class="input-field"
+      style="height: 100px; border: none; resize: none; outline: none; flex: 1;"
+    ></textarea>
+  </div>
+  <p id="messageError" class="error"></p>
+</div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="button">Send Message</button>
+
+      <!-- Submit Status -->
+      <p id="submitStatus" class="status"></p>
+    </form>
+  </div>
+
+  <!-- تحميل مكتبة EmailJS -->
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+
+<script>
+  // Initialize EmailJS with your Public Key
+  emailjs.init("qmMYm-mArQF1wGIfG"); // استبدل YOUR_PUBLIC_KEY بمفتاحك العام
+
+  // Form submission event listener
+  document.getElementById("supportForm").addEventListener("submit", function (event) {
+    event.preventDefault(); // منع إعادة تحميل الصفحة
+
+    // DOM elements
+    const nameInput = document.getElementById("name").value.trim();
+    const emailInput = document.getElementById("email").value.trim();
+    const messageInput = document.getElementById("message").value.trim();
+    const submitStatus = document.getElementById("submitStatus");
+
+    // Reset status message
+    submitStatus.textContent = "";
+    submitStatus.classList.remove("success", "error");
+
+    // Validate form inputs
+    if (!nameInput || !emailInput || !messageInput) {
+      submitStatus.textContent = "All fields are required.";
+      submitStatus.classList.add("error");
+      return;
+    }
+
+    // Sending the email using EmailJS
+    emailjs
+      .send("service_tid20zc", "template_ognwz72", {
+        from_name: nameInput,
+        from_email: emailInput,
+        message: messageInput,
+      })
+      .then(
+        function (response) {
+          submitStatus.textContent = "Message sent successfully!";
+          submitStatus.classList.add("success");
+          document.getElementById("supportForm").reset(); // Reset form fields
+        },
+        function (error) {
+          // تعديل في السطر الذي يطبع الخطأ
+console.error("Error sending email:", error.text || error.message || error);
+          submitStatus.textContent = "Failed to send message. Please try again.";
+          submitStatus.classList.add("error");
+        }
+      );
+  });
+</script>
+</body>
+</html>

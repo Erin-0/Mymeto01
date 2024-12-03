@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - MYMETO</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+
+    .container {
+      max-width: 900px;
+      margin:  non;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 36px;
+      color: #2d89ef;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .emailButton {
+      display: block;
+      width: 200px;
+      margin: 30px auto 0;
+      text-align: center;
+      background-color: #2d89ef;
+      color: white;
+      text-decoration: none;
+      padding: 15px 20px;
+      font-size: 18px;
+      border-radius: 8px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s ease, transform 0.2s;
+    }
+
+    .emailButton:hover {
+      background-color: #2372c1;
+      transform: translateY(-2px);
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>About Us</h1>
+    <p>
+      At <b>MYMETO</b>, we strive to redefine the way you experience and understand weather updates. 
+      What started as a unique project for personal development has evolved into a vision for the 
+      future—delivering personalized, AI-driven weather insights that go beyond the ordinary.
+    </p>
+    <p>
+      <b>Our Mission:</b> To provide users with an intuitive, user-friendly platform that combines accurate 
+      weather data with personalized recommendations. We aim to enhance daily decision-making by integrating 
+      weather forecasts with lifestyle suggestions.
+    </p>
+    <p>
+      <b>Our Vision:</b> We are working on transforming <b>MYMETO</b> into a highly interactive AI-powered 
+      platform that not only informs but assists users in planning their day more efficiently. Imagine receiving 
+      recommendations for what to wear, when to travel, or even alerts tailored to your schedule—all powered 
+      by advanced AI.
+    </p>
+    <p>
+      <b>Our Commitment:</b> We take privacy seriously, storing only essential information such as your name, 
+      email, and favorite cities. As we grow, we aim to maintain transparency and provide value-driven services 
+      to our users.
+    </p>
+    <p>
+      Join us on this journey to make weather updates not just informative but truly impactful.
+    </p>
+    <button class="emailButton" id="emailButton">Contact Me</button>
+  </div>
+  <footer>
+    © 2024 MYMETO. All Rights Reserved.
+  </footer>
+</body>
+<script>
+document.getElementById("emailButton").addEventListener("click", function () {
+  window.location.href = "ayudaparamatar@gmail.com";
+});
+const firebaseConfig = {
+    apiKey: "AIzaSyA6Slo6ADIW5lHYHSx-mdkRALfYawNMY5Y",
+    authDomain: "mymeto-e9fee.firebaseapp.com",
+    projectId: "mymeto-e9fee",
+    storageBucket: "mymeto-e9fee.firebasestorage.app",
+    messagingSenderId: "224872010579",
+    appId: "1:224872010579:web:bcebef217fd9bf0fd007a6",
+    measurementId: "G-HYP247FPHF"
+  };
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
+const userId = localStorage.getItem("userId");
+if (!userId) {
+  console.error("No user ID found.");
+  window.location.href = "logins.html"; // إعادة توجيه المستخدم لتسجيل الدخول
+} else {
+  console.log("User ID:", userId);
+  // يمكنك الآن تحميل بيانات إضافية من Firestore
+}
+
+</script>
+</html>
