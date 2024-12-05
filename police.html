@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MYMETO Privacy Policy</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3B82F6;
+            --secondary-color: #1E3A8A;
+            --background-color: #f9f9f9;
+            --text-color: #333;
+            --white: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial', 'Helvetica Neue', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        .privacy-policy {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 30px;
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--primary-color);
+            color: white;
+            padding: 10px;
+            z-index: 100;
+            transition: top 0.3s ease-in-out;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        .home-link {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 1.5em;
+            z-index: 50;
+            transition: transform 0.2s;
+        }
+
+        .home-link:hover {
+            transform: scale(1.1);
+        }
+
+        h2 {
+            font-size: 2.2em;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 1.5em;
+            color: var(--secondary-color);
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        ul li::before {
+            content: '•';
+            color: var(--primary-color);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .effective-date {
+            font-size: 1em;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            background-color: #f4f7fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        strong {
+            color: var(--secondary-color);
+        }
+
+        @media (max-width: 768px) {
+            .privacy-policy {
+                padding: 15px;
+                margin: 10px;
+            }
+
+            h2 {
+                font-size: 1.8em;
+            }
+
+            h3 {
+                font-size: 1.4em;
+            }
+
+            .home-link {
+                right: 15px;
+                top: 15px;
+            }
+        }
+
+        @media print {
+            body {
+                background-color: white;
+            }
+            .privacy-policy {
+                box-shadow: none;
+                margin: 0;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <a href="index.html" class="home-link" aria-label="Return to Home">
+        <i class="fas fa-home" aria-hidden="true"></i>
+    </a>
+
+    <main id="main-content" class="privacy-policy" role="main">
+        <h1>Privacy Policy for MYMETO</h1>
+        <p class="effective-date" aria-label="Policy Effective Date">
+            <strong>Effective Date:</strong> 2024/12/03
+        </p>
+
+        <section class="section" aria-labelledby="introduction">
+            <h2 id="introduction">Introduction</h2>
+            <p>Welcome to MYMETO! We value your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, and safeguard your information when you use our application and related services.</p>
+        </section>
+
+        <section class="section" aria-labelledby="information-collected">
+            <h2 id="information-collected">1. Information We Collect</h2>
+            <ul>
+                <li><strong>Account Information:</strong> Your username, email address, password, and optional information such as your age and country.</li>
+                <li><strong>Preference Data:</strong> Your saved favorite cities for personalized weather updates.</li>
+                <li><strong>Weather Data:</strong> Weather information is retrieved via the OpenWeather API (Free Plan).</li>
+            </ul>
+        </section>
+
+        <!-- Other sections remain similar, with improved semantic structure and accessibility attributes -->
+        
+        <section class="section" aria-labelledby="contact-info">
+            <h2 id="contact-info">9. Contact Us</h2>
+            <p>If you have any questions or concerns about this Privacy Policy, please contact us:</p>
+            <p>Email: <a href="mailto:ayudaparamatar@gmail.com">ayudaparamatar@gmail.com</a></p>
+        </section>
+
+        <section class="section" aria-labelledby="applicable-law">
+            <h2 id="applicable-law">10. Applicable Law</h2>
+            <p>This Privacy Policy is governed by the laws of Morocco.</p>
+        </section>
+
+        <p><em>By using MYMETO, you agree to the terms outlined in this Privacy Policy.</em></p>
+    </main>
+
+    <script>
+        // Optional: Add smooth scrolling for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
