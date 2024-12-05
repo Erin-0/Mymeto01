@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,13 +15,11 @@
             --white: #ffffff;
             --shadow-color: rgba(0, 0, 0, 0.1);
         }
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-
         body {
             font-family: 'Arial', 'Helvetica Neue', sans-serif;
             background-color: var(--background-color);
@@ -28,7 +27,6 @@
             line-height: 1.6;
             scroll-behavior: smooth;
         }
-
         .privacy-policy {
             max-width: 800px;
             margin: 20px auto;
@@ -37,7 +35,6 @@
             border-radius: 12px;
             box-shadow: 0 4px 12px var(--shadow-color);
         }
-
         .skip-link {
             position: absolute;
             top: -40px;
@@ -48,11 +45,9 @@
             z-index: 100;
             transition: top 0.3s ease-in-out;
         }
-
         .skip-link:focus {
             top: 0;
         }
-
         .home-link {
             position: fixed;
             top: 20px;
@@ -63,11 +58,9 @@
             z-index: 50;
             transition: transform 0.2s;
         }
-
         .home-link:hover {
             transform: scale(1.1);
         }
-
         h2 {
             font-size: 2.2em;
             color: var(--primary-color);
@@ -75,26 +68,22 @@
             border-bottom: 2px solid var(--primary-color);
             padding-bottom: 10px;
         }
-
         h3 {
             font-size: 1.5em;
             color: var(--secondary-color);
             margin-top: 25px;
             margin-bottom: 15px;
         }
-
         ul {
             list-style-type: none;
             padding-left: 20px;
             position: relative;
         }
-
         ul li {
             margin-bottom: 10px;
             padding-left: 20px;
             position: relative;
         }
-
         ul li::before {
             content: '•';
             color: var(--primary-color);
@@ -102,49 +91,40 @@
             left: 0;
             font-weight: bold;
         }
-
         p {
             margin-bottom: 15px;
         }
-
         .effective-date {
             font-size: 1em;
             color: var(--primary-color);
             margin-bottom: 20px;
             font-style: italic;
         }
-
         .section {
             margin-bottom: 30px;
             background-color: #f4f7fa;
             padding: 20px;
             border-radius: 8px;
         }
-
         strong {
             color: var(--secondary-color);
         }
-
         @media (max-width: 768px) {
             .privacy-policy {
                 padding: 15px;
                 margin: 10px;
             }
-
             h2 {
                 font-size: 1.8em;
             }
-
             h3 {
                 font-size: 1.4em;
             }
-
             .home-link {
                 right: 15px;
                 top: 15px;
             }
         }
-
         @media print {
             body {
                 background-color: white;
@@ -157,6 +137,7 @@
         }
     </style>
 </head>
+
 <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
@@ -184,12 +165,61 @@
             </ul>
         </section>
 
-        <!-- Other sections remain similar, with improved semantic structure and accessibility attributes -->
-        
+        <section class="section" aria-labelledby="how-we-use">
+            <h2 id="how-we-use">2. How We Use Your Information</h2>
+            <p>The information we collect is used for the following purposes:</p>
+            <ul>
+                <li>To create and manage your account, including login and saved preferences.</li>
+                <li>To provide you with weather updates and related features.</li>
+                <li>To save your progress and preferences, ensuring a better experience.</li>
+            </ul>
+            <p>We do not collect or store your precise location or other sensitive data.</p>
+        </section>
+
+        <section class="section" aria-labelledby="how-we-store">
+            <h2 id="how-we-store">3. How We Store Your Information</h2>
+            <p>Your personal data (e.g., username, email, preferences) is securely stored on our servers. We take reasonable measures to protect your information from unauthorized access, disclosure, or misuse.</p>
+        </section>
+
+        <section class="section" aria-labelledby="sharing-of-information">
+            <h2 id="sharing-of-information">4. Sharing of Information</h2>
+            <p>We do not sell, trade, or share your personal information with third parties, except:</p>
+            <ul>
+                <li><strong>Third-party APIs:</strong> We use OpenWeather API to provide weather updates. OpenWeather may collect or process weather-related data but does not receive your personal information.</li>
+            </ul>
+        </section>
+
+        <section class="section" aria-labelledby="data-retention">
+            <h2 id="data-retention">5. Data Retention</h2>
+            <p>We retain your data for as long as your account is active. You can delete your account at any time, and your data will be permanently erased.</p>
+        </section>
+
+        <section class="section" aria-labelledby="your-rights">
+            <h2 id="your-rights">6. Your Rights</h2>
+            <p>As a user of MYMETO, you have the following rights:</p>
+            <ul>
+                <li><strong>Access:</strong> You can request to see what information we have stored.</li>
+                <li><strong>Modification:</strong> You can update or correct your information.</li>
+                <li><strong>Deletion:</strong> You can request that your data be deleted.</li>
+            </ul>
+            <p>To exercise these rights, contact us at <a href="mailto:ayudaparamatar@gmail.com">ayudaparamatar@gmail.com</a>.</p>
+        </section>
+
+        <section class="section" aria-labelledby="cookies">
+            <h2 id="cookies">7. Cookies and Tracking</h2>
+            <p>Currently, MYMETO does not use cookies or tracking tools to analyze user behavior.</p>
+        </section>
+
+        <section class="section" aria-labelledby="changes">
+            <h2 id="changes">8. Changes to This Policy</h2>
+            <p>We may update this Privacy Policy from time to time. We encourage you to review it regularly to stay informed. Any significant changes will be communicated through the app or our GitHub page.</p>
+        </section>
+
         <section class="section" aria-labelledby="contact-info">
             <h2 id="contact-info">9. Contact Us</h2>
             <p>If you have any questions or concerns about this Privacy Policy, please contact us:</p>
             <p>Email: <a href="mailto:ayudaparamatar@gmail.com">ayudaparamatar@gmail.com</a></p>
+            <p>GitHub: <a href="https://github.com/YOUR_GITHUB_LINK" target="_blank">MYMETO GitHub</a></p>
         </section>
 
         <section class="section" aria-labelledby="applicable-law">
@@ -212,4 +242,5 @@
         });
     </script>
 </body>
+
 </html>
