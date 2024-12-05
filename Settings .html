@@ -87,7 +87,7 @@
         </div>
 
         <div class="privacy-section">
-            <a href="police.html" class="privacy-link">
+            <a href="index.html"   class="privacy-link">
                 <i class="fas fa-file-contract"></i> 
                 Read Privacy Policy
             </a>
@@ -108,27 +108,7 @@ const firebaseConfig = {
     appId: "1:224872010579:web:bcebef217fd9bf0fd007a6",
     measurementId: "G-HYP247FPHF"
   };
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
-firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    console.log("User is logged in:", user.uid);
-    // حمل بيانات المستخدم أو نفذ العمليات الأخرى
-  } else {
-    console.error("User is not logged in.");
-    // أعد التوجيه إلى صفحة تسجيل الدخول
-    window.location.href = "logins.html";
-  }
-});
-const userId = localStorage.getItem("userId");
-if (!userId) {
-  console.error("No user ID found.");
-  window.location.href = "logins.html"; // إعادة توجيه المستخدم لتسجيل الدخول
-} else {
-  console.log("User ID:", userId);
-  // يمكنك الآن تحميل بيانات إضافية من Firestore
-}
+
 
 </script>
 </html>
