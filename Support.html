@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Support Page</title>
+  <title>Support</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
     body {
@@ -154,11 +154,11 @@
   </div>
 
   <!-- تحميل مكتبة EmailJS -->
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.6.4/dist/email.min.js"></script>
 <script>
   // Initialize EmailJS with your Public Key
-  emailjs.init("qmMYm-mArQF1wGIfG"); // استبدل YOUR_PUBLIC_KEY بمفتاحك العام
+  emailjs.init("qmMYm-mArQF1wGIfG", "NCY2m00NQIf7MaNd0wdys"); // استبدل YOUR_PUBLIC_KEY بمفتاحك العام
 
   // Form submission event listener
   document.getElementById("supportForm").addEventListener("submit", function (event) {
@@ -196,10 +196,9 @@
         },
         function (error) {
           // تعديل في السطر الذي يطبع الخطأ
-console.error("Error sending email:", error.text || error.message || error);
-          submitStatus.textContent = "Failed to send message. Please try again.";
-          submitStatus.classList.add("error");
-        }
+console.error("Failed to send email:", JSON.stringify(error));
+        alert("Failed to send email. Check console for details.");
+    }
       );
   });
 </script>
