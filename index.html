@@ -439,6 +439,7 @@
             <ul>
     <li id="set"><i class="fas fa-cog"></i>Settings</li>
     <li id="ab-us"><i class="fas fa-info-circle"></i>About Us</li>
+    
     <li id="sav"><i class="fas fa-city"></i>Saved Cities</li>
     <li id="login-account">
         <i class="fas fa-sign-in-alt"></i>Login
@@ -575,42 +576,45 @@
             </div>
         </div>
         
-        <div class="cird">
-    <div class="card-image" style="background-image: url('/api/placeholder/300/200');"></div>
-    <div class="card-con">
-      <div class="cartit">Temperature</div>
-      <div class="card-ses">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget risus porta, eleifend odio vel, cursus dolor.</div>
-    </div>
+        <div class="cird" id="temperature-card">
+  <div class="card-image" style="background-image: url('');"></div>
+  <div class="card-con">
+    <div class="cartit">Temperature</div>
+    <div class="card-ses">Loading...</div>
   </div>
+</div>
 
-        <div class="cird">
-    <div class="card-image" style="background-image: url('/api/placeholder/300/200');"></div>
-    <div class="card-con">
-      <div class="cartit">Humidity</div>
-      <div class="card-ses">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget risus porta, eleifend odio vel, cursus dolor.</div>
-    </div>
-    </div>
-        <div class="cird">
-    <div class="card-image" style="background-image: url('/api/placeholder/300/200');"></div>
-    <div class="card-con">
-      <div class="cartit">Wind Speed</div>
-      <div class="card-ses">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget risus porta, eleifend odio vel, cursus dolor.</div>
-    </div>
-    </div>
-        <div class="cird">
-    <div class="card-image" style="background-image: url('/api/placeholder/300/200');"></div>
-    <div class="card-con">
-      <div class="cartit">Visibility</div>
-      <div class="card-ses">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget risus porta, eleifend odio vel, cursus dolor.</div>
-    </div>
-    </div>
-        <div class="cird">
-    <div class="card-image" style="background-image: url('/api/placeholder/300/200');"></div>
-    <div class="card-con">
-      <div class="cartit">Cloudiness</div>
-      <div class="card-ses">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget risus porta, eleifend odio vel, cursus dolor.</div>
-    </div>
-    </div>
+<div class="cird" id="humidity-card">
+  <div class="card-image" style="background-image: url('');"></div>
+  <div class="card-con">
+    <div class="cartit">Humidity</div>
+    <div class="card-ses">Loading...</div>
+  </div>
+</div>
+
+<div class="cird" id="wind-speed-card">
+  <div class="card-image" style="background-image: url('');"></div>
+  <div class="card-con">
+    <div class="cartit">Wind Speed</div>
+    <div class="card-ses">Loading...</div>
+  </div>
+</div>
+
+<div class="cird" id="visibility-card">
+  <div class="card-image" style="background-image: url('');"></div>
+  <div class="card-con">
+    <div class="cartit">Visibility</div>
+    <div class="card-ses">Loading...</div>
+  </div>
+</div>
+
+<div class="cird" id="cloudiness-card">
+  <div class="card-image" style="background-image: url('');"></div>
+  <div class="card-con">
+    <div class="cartit">Cloudiness</div>
+    <div class="card-ses">Loading...</div>
+  </div>
+</div>
 
     
             
@@ -627,6 +631,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 
         <script>
+        
         // تأكد من استيراد Firebase في مشروعك
 // إذا كنت تستخدم Firebase CDN:
 
@@ -737,8 +742,9 @@ document.getElementById("set").addEventListener("click", function () {
 });
 
 document.getElementById("sav").addEventListener("click", function () {
-    window.location.href = "Saved%20cities%20.html"; // تحويل المستخدم إلى Saved cites
+    window.location.href = "Saved%20cities%20.html"; // تحويل المستخدم إلى Saved cities.html
 });
+
 
         const API_KEY = "579a8e74d73a35c76ebe00d0ef5198dc";
 
@@ -906,6 +912,7 @@ document.getElementById("sav").addEventListener("click", function () {
             overcast: "Overcast skies. Prepare for potential rain. Keep an umbrella handy."
         }
     };
+                // روابط الصور حسب التوصيات
 
     // Temperature-based recommendation
     let tempRec = recommendations.temperature.warm;
@@ -1026,4 +1033,4 @@ loadSavedCities();
 
     </script>
 </body>
-</html>
+    </html>
