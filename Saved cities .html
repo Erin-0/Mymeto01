@@ -3,160 +3,265 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Saved Cities</title>
+  <title>Weather Cities Collection</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
     :root {
-      --light-blue: #e6f2ff;
-      --mid-blue: #87ceeb;
-      --dark-blue: #0766ff;
-      --text-color: #2c3e50;
+      --primary: #364959;
+      --secondary: #36ABD9;
+      --accent: #F2F2F2;
+      --light: #F5F5F5;
+      --gradient-start: #002B5B;
+      --gradient-end: #2B4865;
+      --card-shadow: 0 8px 16px rgba(0,0,0,0.1);
     }
 
     * {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     }
 
     body {
-      background: linear-gradient(135deg, var(--light-blue), var(--mid-blue));
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      
-      padding: 20px;
-      color: var(--text-color);
+      background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+      color: var(--light);
+      padding: 2rem;
     }
 
     .container {
-      width: 95%;
-      max-width: 700px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
     }
 
-    .no-cities {
-   /* لون النص */
-  font-size: 1.5rem; /* حجم النص */
-  text-align: center; /* محاذاة النص في المنتصف */
-  opacity: 0.7; /* شفافية طفيفة */
-  position: absolute; /* لتحديد موقع العنصر */
-  top: 10%; /* جعله قريباً من أعلى الشاشة */
-  left: 50%; /* بداية العنصر في منتصف العرض */
-  transform: translate(-50%, -50%); /* تحريك العنصر لمركز العرض */
-  white-space: nowrap; /* جعل النص في سطر واحد فقط */
-}
-      
-      
-      
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .city-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
     }
 
     .city-item {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: white;
-      border: 2px solid var(--light-blue);
-      border-radius: 15px;
-      padding: 15px;
-      margin-bottom: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 1.5rem;
       transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .city-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05));
+      pointer-events: none;
     }
 
     .city-item:hover {
       transform: translateY(-5px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      box-shadow: var(--card-shadow);
+      border-color: var(--accent);
     }
 
     .city-name {
-      font-size: 1.2rem;
+      font-size: 1.5rem;
       font-weight: 600;
-      color: var(--dark-blue);
+      margin-bottom: 1rem;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .city-name i {
+      font-size: 1.2rem;
     }
 
     .city-actions {
       display: flex;
-      gap: 10px;
+      gap: 1rem;
+      margin-top: 1.5rem;
     }
 
     .btn {
+      flex: 1;
+      padding: 0.8rem 1.2rem;
       border: none;
-      border-radius: 10px;
-      padding: 8px 15px;
+      border-radius: 12px;
       cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
+      gap: 0.5rem;
       font-size: 0.9rem;
-      transition: all 0.3s ease;
     }
 
     .btn-visit {
-      background: var(--dark-blue);
-      color: white;
+      background: var(--accent);
+      color: var(--primary);
+    }
+
+    .btn-visit:hover {
+      background: #7CD1BD;
+      transform: translateY(-2px);
     }
 
     .btn-delete {
-      background: #ff4d4d;
-      color: white;
+      background: rgba(255, 77, 77, 0.2);
+      color: #ff4d4d;
+      border: 1px solid #ff4d4d;
     }
 
-    @media (max-width: 480px) {
-      .city-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
+    .btn-delete:hover {
+      background: rgba(255, 77, 77, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .no-cities {
+      text-align: center;
+      padding: 3rem;
+      font-size: 1.2rem;
+      color: var(--accent);
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      margin: 2rem auto;
+      max-width: 500px;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+    }
+
+    .popup-content {
+      background: var(--primary);
+      padding: 2rem;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 400px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      border: 1px solid var(--accent);
+    }
+
+    .popup-content h2 {
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .popup-content p {
+      margin-bottom: 2rem;
+      color: var(--light);
+    }
+
+    .popup-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .popup-actions button {
+      padding: 0.8rem 1.5rem;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    #confirmButton {
+      background: var(--accent);
+      color: var(--primary);
+    }
+
+    #cancelButton {
+      background: transparent;
+      color: var(--light);
+      border: 1px solid var(--light);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+      
+      .city-grid {
+        grid-template-columns: 1fr;
       }
 
-      .city-actions {
-        width: 100%;
-        justify-content: space-between;
+      .header h1 {
+        font-size: 2rem;
       }
-      .popup {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.5);
-  justify-content: center;
-  align-items: center;
-}
-
-.popup-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  width: 300px;
-  text-align: center;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
     }
   </style>
 </head>
 <body>
-  <div id="confirmationPopup" class="popup">
-  <div class="popup-content">
-    <h2>Confirm Two-Factor Authentication</h2>
-    <p>Scan the QR code to complete setup</p>
-    <div class="popup-actions">
-      <button id="confirmButton">Confirm</button>
-      <button id="cancelButton">Cancel</button>
+  <div class="container">
+    <div class="header">
+      <h1><i class="fas fa-map-marker-alt"></i> My Weather Cities</h1>
+      <p>Your collection of favorite weather locations</p>
+    </div>
+    
+    <div id="city-list" class="city-grid">
+      <!-- Cities will be populated here -->
+    </div>
+    
+    <div id="no-cities-message" class="no-cities">
+      <i class="fas fa-cloud" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+      <!-- No cities message will appear here -->
     </div>
   </div>
-</div>
-  <div class="container" id="city-list">
-    <!-- Saved cities will appear here -->
+
+  <div id="confirmationPopup" class="popup">
+    <div class="popup-content">
+      <h2>Confirm Deletion</h2>
+      <p>Are you sure you want to remove this city from your collection?</p>
+      <div class="popup-actions">
+        <button id="confirmButton">Yes, Remove</button>
+        <button id="cancelButton">Cancel</button>
+      </div>
+    </div>
   </div>
-  <div id="no-cities-message" class="no-cities"></div>
 
   <script>
+  
   const cityListDiv = document.getElementById('city-list');
     const noCitiesMessage = document.getElementById('no-cities-message');
     const confirmationPopup = document.getElementById('confirmationPopup');
@@ -233,6 +338,8 @@
     // Load cities on page load
     loadSavedCities();
   
+  
+    // Your existing JavaScript remains unchanged
   </script>
 </body>
-</html>
+          </html>
